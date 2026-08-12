@@ -2,25 +2,16 @@
   "name": "event-intelligence-os",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "npm run dev -w apps/web",
+    "build": "npm run build -w apps/web",
+    "api": "cd apps/api && uvicorn api.main:app --reload --host 0.0.0.0 --port 8000",
+    "worker": "cd apps/api && celery -A worker.main worker -l info",
+    "db:upgrade": "cd apps/api && alembic upgrade head",
+    "db:migrate": "cd apps/api && alembic revision --autogenerate -m"
   },
-  "dependencies": {
-    "next": "16.2.9",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.9",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+  "devDependencies": {}
 }
